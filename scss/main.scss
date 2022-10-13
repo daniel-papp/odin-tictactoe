@@ -15,21 +15,23 @@ body {
 }
 
 h1 {
-    margin: 20px auto;
+    font-size: 3rem;
     color: orangered;
+    text-decoration: underline;
 }
   
 .board-container {
-    margin: 20px;
+    margin: 50px;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
+    gap: 8px;
   
     .field {
-      width: 100px;
-      height: 100px;
+      width: 150px;
+      height: 150px;
       background-color: rgb(45, 64, 83);
+      border-radius: 5px;
     }
 }
   
