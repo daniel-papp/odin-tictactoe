@@ -15,9 +15,7 @@ const gameboardController = (function() {
     const fields = document.querySelectorAll('.field');
 
     const _render = function() {
-        for (let i = 0; i < 9; i++) {
-            fields[i].textContent = `${gameboard[i]}`;
-        }
+        fields.forEach((field, marker) => field.textContent = gameboard[marker]);
     };
 
     return {
