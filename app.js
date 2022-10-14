@@ -4,27 +4,27 @@
 //  a private render method for displaying the contents of the gameboard array on the DOM
 
 const gameboardController = (function() {
-    const gameboard = Array.from({length: 9});
+    const _gameboard = Array.from({length: 9});
 
     const updateBoard = function(field, marker) {
-        gameboard[field] = marker;
+        _gameboard[field] = marker;
         _render();
     };
 
     const getBoardState = function() {
-        return gameboard;
+        return _gameboard;
     };
 
     //cache DOM fields
-    const fields = document.querySelectorAll('.field');
+    const _fields = document.querySelectorAll('.field');
 
     const _render = function() {
-        fields.forEach((field, marker) => field.textContent = gameboard[marker]);
+        _fields.forEach((field, marker) => field.textContent = _gameboard[marker]);
     };
 
     return {
         getBoardState: getBoardState,
-        updateBoard: updateBoard,
+        updateBoard: updateBoard
     };
     
 })();
