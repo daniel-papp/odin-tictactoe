@@ -4,22 +4,22 @@
 //  a private render method for displaying the contents of the gameboard array on the DOM
 
 const gameboardController = (function() {
-    const _gameboard = Array.from({length: 9});
+    const gameboard = Array.from({length: 9});
 
     const updateBoard = function(field, marker) {
-        _gameboard[field] = marker;
+        gameboard[field] = marker;
         _render();
     };
 
     const getBoardState = function() {
-        return _gameboard;
+        return gameboard;
     };
 
     //cache DOM fields
-    const _fields = document.querySelectorAll('.field');
+    const fields = document.querySelectorAll('.field');
 
     const _render = function() {
-        _fields.forEach((field, marker) => field.textContent = _gameboard[marker]);
+        fields.forEach((field, marker) => field.textContent = gameboard[marker]);
     };
 
     return {
@@ -39,8 +39,42 @@ const gameboardController = (function() {
 //  placeMarker method (also public) it will call the gameboardController.updateBoard method when a certain field is clicked
 
 const createPlayer = function(name, marker) {
+    // this.name = name;
+    // this.marker = marker;
+    let score = 0;
+
+    //cache DOM fields
+    const fields = document.querySelectorAll('.field');
+
+    const _placeMarker = function(e) {
+        const currentField = Number(e.target.getAttribute('id'));
+        gameboardController.updateBoard(currentField, marker);
+    };
+
+    // binding events
+    fields.forEach(field => field.addEventListener('click', _placeMarker));
+
+    const updateScore = function() {
+        score++;
+    };
+    
+    const displayScore = function() {
+        console.log(score);
+    }
+
+
+
+    return {
+        name: name,
+        updateScore: updateScore,
+    	displayScore: displayScore,
+    }
 
 };
+
+
+const playerOne = createPlayer('First Player', 'X');
+// const playerTwo = createPlayer('Second Player', 'O');
 
 
 
