@@ -5,10 +5,12 @@
 
 const gameboardController = (function() {
     const gameboard = Array.from({length: 9});
+    const invalidFields = [];
+
 
     const updateBoard = function(field, marker) {
-        gameboard[field] = marker;
-        _render();
+            gameboard[field] = marker;
+            _render();
     };
 
     const getBoardState = function() {
@@ -24,7 +26,8 @@ const gameboardController = (function() {
 
     return {
         getBoardState: getBoardState,
-        updateBoard: updateBoard
+        updateBoard: updateBoard,
+        invalidFields: invalidFields
     };
     
 })();
@@ -46,9 +49,9 @@ const createPlayer = function(name, marker) {
   
     const placeMarker = function(e) {
         const currentField = Number(e.target.getAttribute('id'));
-        gameboardController.updateBoard(currentField, marker);
-        capturedFields.push(currentField);
-        console.log(capturedFields);
+            gameboardController.updateBoard(currentField, marker);
+            capturedFields.push(currentField);
+            console.log(capturedFields);
     };
 
     const updateScore = function() {
@@ -90,11 +93,19 @@ const gameFlowController = (function() {
 
     const takeTurn = function(e) {
         let currentPlayer = (currentTurn % 2 !== 0) ? playerOne : playerTwo
+        const currentField = Number(e.target.getAttribute('id'));
 
-        currentPlayer.placeMarker(e);
+        if (gameboardController.invalidFields.includes(currentField)) {
+            return;
+        } else {
+            currentPlayer.placeMarker(e);
+            gameboardController.invalidFields.push(currentField);
+            currentTurn++;
+        }
 
-        currentTurn++;
     }
+
+
 
 
     //cache DOM fields
