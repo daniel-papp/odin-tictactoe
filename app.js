@@ -42,17 +42,14 @@ const createPlayer = function(name, marker) {
     // this.name = name;
     // this.marker = marker;
     let score = 0;
-
-    //cache DOM fields
-    const fields = document.querySelectorAll('.field');
-
-    const _placeMarker = function(e) {
+    const capturedFields =[];
+  
+    const placeMarker = function(e) {
         const currentField = Number(e.target.getAttribute('id'));
         gameboardController.updateBoard(currentField, marker);
+        capturedFields.push(currentField);
+        console.log(capturedFields);
     };
-
-    // binding events
-    fields.forEach(field => field.addEventListener('click', _placeMarker));
 
     const updateScore = function() {
         score++;
@@ -68,13 +65,14 @@ const createPlayer = function(name, marker) {
         name: name,
         updateScore: updateScore,
     	displayScore: displayScore,
+        placeMarker: placeMarker
     }
 
 };
 
 
 const playerOne = createPlayer('First Player', 'X');
-// const playerTwo = createPlayer('Second Player', 'O');
+const playerTwo = createPlayer('Second Player', 'O');
 
 
 
@@ -88,5 +86,21 @@ const playerOne = createPlayer('First Player', 'X');
 //  start a new game
 
 const gameFlowController = (function() {
+    let currentTurn = 1;
+
+    const takeTurn = function(e) {
+        let currentPlayer = (currentTurn % 2 !== 0) ? playerOne : playerTwo
+
+        currentPlayer.placeMarker(e);
+
+        currentTurn++;
+    }
+
+
+    //cache DOM fields
+    const fields = document.querySelectorAll('.field');
+
+    // binding events
+    fields.forEach(field => field.addEventListener('click', takeTurn));
 
 })();
