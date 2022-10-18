@@ -47,11 +47,12 @@ const createPlayer = function(name, marker) {
     let score = 0;
     const capturedFields =[];
   
-    const placeMarker = function(e) {
-        const currentField = Number(e.target.getAttribute('id'));
-            gameboardController.updateBoard(currentField, marker);
-            capturedFields.push(currentField);
-            console.log(capturedFields);
+    const placeMarker = function(e, field) {
+        // const field = Number(e.target.getAttribute('id'));
+        // console.log(field);
+        gameboardController.updateBoard(field, marker);
+        capturedFields.push(field);
+        console.log(`${marker}: ${capturedFields}`);
     };
 
     const updateScore = function() {
@@ -68,7 +69,8 @@ const createPlayer = function(name, marker) {
         name: name,
         updateScore: updateScore,
     	displayScore: displayScore,
-        placeMarker: placeMarker
+        placeMarker: placeMarker,
+        capturedFields: capturedFields
     }
 
 };
@@ -98,13 +100,33 @@ const gameFlowController = (function() {
         if (gameboardController.invalidFields.includes(currentField)) {
             return;
         } else {
-            currentPlayer.placeMarker(e);
+            currentPlayer.placeMarker(e, currentField);
             gameboardController.invalidFields.push(currentField);
+            checkForWinner(winningStates, currentPlayer.capturedFields);
             currentTurn++;
         }
-
     }
 
+    const checkForWinner = function(winning, captured) {
+        for (let i = 0; i < winning.length; i++) {
+            if (winning[i].every(elem => captured.includes(elem))) {
+                console.log('We have a winner!');
+                return true;
+            }
+        }
+    };
+
+
+    const winningStates = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
 
 
 
