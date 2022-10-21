@@ -46,7 +46,7 @@ const createPlayer = function(name, marker) {
         // console.log(field);
         gameboardController.updateBoard(field, marker);
         capturedFields.push(field);
-        console.log(`${marker}: ${capturedFields}`);
+        // console.log(`${marker}: ${capturedFields}`);
     };
 
     const updateScore = function() {
@@ -54,7 +54,7 @@ const createPlayer = function(name, marker) {
     };
     
     const displayScore = function() {
-        console.log(score);
+        return score;
     }
 
     const clearCapturedFields = function() {
@@ -92,7 +92,7 @@ const gameFlowController = (function() {
         } else {
             currentPlayer.placeMarker(e, currentField);
             gameboardController.invalidFields.push(currentField);
-            checkForWinner(winningStates, currentPlayer.capturedFields, currentPlayer.name);
+            checkForWinner(winningStates, currentPlayer.capturedFields, currentPlayer);
             currentTurn++;
         }
     }
@@ -100,7 +100,10 @@ const gameFlowController = (function() {
     const checkForWinner = function(winning, captured, winner) {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
-                console.log(`${winner} is the winner!`);
+                winner.updateScore();
+                console.log(`${winner.name} is the winner!`);
+                console.log('The score is:')
+                console.log(`X: ${playerOne.displayScore()} - O: ${playerTwo.displayScore()}`)
                 gameOver = true;
             }
         }
