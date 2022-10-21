@@ -1,5 +1,5 @@
 const gameboardController = (function() {
-    const gameboard = Array.from({length: 9});
+    const gameboard = [];
     const invalidFields = [];
 
 
@@ -7,6 +7,12 @@ const gameboardController = (function() {
             gameboard[field] = marker;
             _render();
     };
+
+    const clearBoard = function() {
+        gameboard.splice(0, gameboard.length);
+        invalidFields.splice(0, invalidFields.length);
+        _render();
+    }
 
     const getBoardState = function() {
         return gameboard;
@@ -22,7 +28,8 @@ const gameboardController = (function() {
     return {
         getBoardState: getBoardState,
         updateBoard: updateBoard,
-        invalidFields: invalidFields
+        invalidFields: invalidFields,
+        clearBoard: clearBoard
     };
     
 })();
@@ -50,12 +57,17 @@ const createPlayer = function(name, marker) {
         console.log(score);
     }
 
+    const clearCapturedFields = function() {
+        capturedFields.splice(0, capturedFields.length);
+    }
+
     return {
         name: name,
         updateScore: updateScore,
     	displayScore: displayScore,
         placeMarker: placeMarker,
-        capturedFields: capturedFields
+        capturedFields: capturedFields,
+        clearCapturedFields: clearCapturedFields
     }
 
 };
@@ -94,6 +106,14 @@ const gameFlowController = (function() {
         }
     };
 
+    const startNewGame = function() {
+        gameboardController.clearBoard();
+        playerOne.clearCapturedFields();
+        playerTwo.clearCapturedFields();
+        currentTurn = 1;
+        gameOver = false;
+    }
+
     const winningStates = [
         [0, 1, 2],
         [3, 4, 5],
@@ -110,5 +130,9 @@ const gameFlowController = (function() {
 
     // binding events
     fields.forEach(field => field.addEventListener('click', takeTurn));
+
+    return {
+        startNewGame: startNewGame
+    }
 
 })();
