@@ -1,8 +1,3 @@
-// create a gameboardController object with a module, this object will have:
-//  a gameboard array (empty at the start, 3x3 2D array)
-//  a public updateBoard method for updating the gameboard array after each player move
-//  a private render method for displaying the contents of the gameboard array on the DOM
-
 const gameboardController = (function() {
     const gameboard = Array.from({length: 9});
     const invalidFields = [];
@@ -33,14 +28,6 @@ const gameboardController = (function() {
 })();
 
 
-
-
-
-// createPlayer factory function: creates player obejcts, players will have:
-//  properties: name, marker, score
-//  public methods: setName, updateScore
-//  placeMarker method (also public) it will call the gameboardController.updateBoard method when a certain field is clicked
-
 const createPlayer = function(name, marker) {
     // this.name = name;
     // this.marker = marker;
@@ -63,8 +50,6 @@ const createPlayer = function(name, marker) {
         console.log(score);
     }
 
-
-
     return {
         name: name,
         updateScore: updateScore,
@@ -80,20 +65,13 @@ const playerOne = createPlayer('First Player', 'X');
 const playerTwo = createPlayer('Second Player', 'O');
 
 
-
-
-
-// create gameFlowController object with a module, this object will:
-//  start the game
-//  decide whose turn is it
-//  check win condition after every turn (and display end of game message if there is a winner)
-//  update player score after win by calling player.updateScore method
-//  start a new game
-
 const gameFlowController = (function() {
     let currentTurn = 1;
+    let gameOver = false;
 
     const takeTurn = function(e) {
+        if (gameOver) return;
+
         let currentPlayer = (currentTurn % 2 !== 0) ? playerOne : playerTwo
         const currentField = Number(e.target.getAttribute('id'));
 
@@ -111,11 +89,10 @@ const gameFlowController = (function() {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
                 console.log(`${winner} is the winner!`);
-                return true;
+                gameOver = true;
             }
         }
     };
-
 
     const winningStates = [
         [0, 1, 2],
@@ -127,8 +104,6 @@ const gameFlowController = (function() {
         [0, 4, 8],
         [2, 4, 6]
     ];
-
-
 
     //cache DOM fields
     const fields = document.querySelectorAll('.field');
