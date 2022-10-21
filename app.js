@@ -102,15 +102,15 @@ const gameFlowController = (function() {
         } else {
             currentPlayer.placeMarker(e, currentField);
             gameboardController.invalidFields.push(currentField);
-            checkForWinner(winningStates, currentPlayer.capturedFields);
+            checkForWinner(winningStates, currentPlayer.capturedFields, currentPlayer.name);
             currentTurn++;
         }
     }
 
-    const checkForWinner = function(winning, captured) {
+    const checkForWinner = function(winning, captured, winner) {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
-                console.log('We have a winner!');
+                console.log(`${winner} is the winner!`);
                 return true;
             }
         }
