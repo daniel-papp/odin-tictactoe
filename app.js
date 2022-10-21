@@ -20,16 +20,22 @@ const gameboardController = (function() {
 
     //cache DOM fields
     const fields = document.querySelectorAll('.field');
+    const playerOneDisplay = document.querySelector('.player-one-score');
+    const playerTwoDisplay = document.querySelector('.player-two-score');
+
 
     const _render = function() {
         fields.forEach((field, marker) => field.textContent = gameboard[marker]);
+        playerOneDisplay.textContent = `${playerOne.getName()}: ${playerOne.displayScore()}`
+        playerTwoDisplay.textContent = `${playerTwo.getName()}: ${playerTwo.displayScore()}`
     };
 
     return {
         getBoardState: getBoardState,
         updateBoard: updateBoard,
         invalidFields: invalidFields,
-        clearBoard: clearBoard
+        clearBoard: clearBoard,
+        render: _render
     };
     
 })();
@@ -51,7 +57,12 @@ const createPlayer = function(name, marker) {
 
     const updateScore = function() {
         score++;
+        gameboardController.render();
     };
+
+    const getName = function() {
+        return name;
+    }
     
     const displayScore = function() {
         return score;
@@ -64,6 +75,7 @@ const createPlayer = function(name, marker) {
     return {
         name: name,
         updateScore: updateScore,
+        getName: getName,
     	displayScore: displayScore,
         placeMarker: placeMarker,
         capturedFields: capturedFields,
@@ -73,8 +85,8 @@ const createPlayer = function(name, marker) {
 };
 
 
-const playerOne = createPlayer('First Player', 'X');
-const playerTwo = createPlayer('Second Player', 'O');
+const playerOne = createPlayer('Player One', 'X');
+const playerTwo = createPlayer('Player Two', 'O');
 
 
 const gameFlowController = (function() {
@@ -101,9 +113,9 @@ const gameFlowController = (function() {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
                 winner.updateScore();
-                console.log(`${winner.name} is the winner!`);
-                console.log('The score is:')
-                console.log(`X: ${playerOne.displayScore()} - O: ${playerTwo.displayScore()}`)
+                // console.log(`${winner.name} is the winner!`);
+                // console.log('The score is:')
+                // console.log(`X: ${playerOne.displayScore()} - O: ${playerTwo.displayScore()}`)
                 gameOver = true;
             }
         }
@@ -139,3 +151,5 @@ const gameFlowController = (function() {
     }
 
 })();
+
+gameFlowController.startNewGame();

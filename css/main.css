@@ -20,7 +20,8 @@ h1 {
 }
 
 .board-container {
-  margin: 50px;
+  margin: 50px auto;
+  max-width: 466px;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(3, 1fr);
@@ -36,4 +37,11 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-around;
+  color: white;
+  font-size: 2rem;
 }
