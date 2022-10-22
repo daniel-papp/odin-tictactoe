@@ -41,7 +41,26 @@ h1 {
 
 .scoreboard {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   color: white;
   font-size: 2rem;
 }
+
+.btn-area {
+  margin: 40px;
+  display: flex;
+  justify-content: center;
+}
+.btn-area .btn {
+  font-size: 1.5rem;
+  padding: 10px;
+  background-color: orangered;
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+.btn-area .btn:hover {
+  background-color: rgb(187, 50, 0);
+}
+
+/*# sourceMappingURL=main.css.map */

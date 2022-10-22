@@ -140,11 +140,13 @@ const gameFlowController = (function() {
         [2, 4, 6]
     ];
 
-    //cache DOM fields
+    //cache DOM
     const fields = document.querySelectorAll('.field');
+    const newGameButton = document.querySelector('#new-game-btn');
 
     // binding events
     fields.forEach(field => field.addEventListener('click', takeTurn));
+    newGameButton.addEventListener('click', startNewGame);
 
     return {
         startNewGame: startNewGame
