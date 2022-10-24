@@ -20,14 +20,18 @@ const gameboardController = (function() {
 
     //cache DOM fields
     const fields = document.querySelectorAll('.field');
-    const playerOneDisplay = document.querySelector('.player-one-score');
-    const playerTwoDisplay = document.querySelector('.player-two-score');
+    const xName = document.querySelector('#x-name');
+    const oName = document.querySelector('#o-name');
+    const xScore = document.querySelector('#x-score');
+    const oScore = document.querySelector('#o-score');
 
 
     const _render = function() {
         fields.forEach((field, marker) => field.textContent = gameboard[marker]);
-        playerOneDisplay.textContent = `${playerOne.getName()}: ${playerOne.displayScore()}`
-        playerTwoDisplay.textContent = `${playerTwo.getName()}: ${playerTwo.displayScore()}`
+        xName.textContent = `${playerOne.getName()}`;
+        oName.textContent = `${playerTwo.getName()}`;
+        xScore.textContent = `${playerOne.displayScore()}`;
+        oScore.textContent = `${playerTwo.displayScore()}`;
     };
 
     return {
@@ -85,8 +89,8 @@ const createPlayer = function(name, marker) {
 };
 
 
-const playerOne = createPlayer('Player One', 'X');
-const playerTwo = createPlayer('Player Two', 'O');
+const playerOne = createPlayer('Player', 'X');
+const playerTwo = createPlayer('CPU', 'O');
 
 
 const gameFlowController = (function() {

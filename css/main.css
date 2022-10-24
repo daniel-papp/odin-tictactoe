@@ -17,10 +17,32 @@ h1 {
   font-size: 3rem;
   color: orangered;
   text-decoration: underline;
+  margin-bottom: 60px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.menu .turn-indicator {
+  background-color: rgb(45, 64, 83);
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 35px;
+}
+.menu .settings-btn {
+  width: 35px;
+  height: 35px;
+  padding: 3px;
 }
 
 .board-container {
-  margin: 50px auto;
+  margin: 20px auto;
   max-width: 466px;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
@@ -41,7 +63,22 @@ h1 {
 
 .scoreboard {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   color: white;
-  font-size: 2rem;
+}
+.scoreboard .score-indicator {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid orangered;
+  border-radius: 5px;
+  width: 120px;
+  align-items: center;
+  padding: 5px;
+}
+.scoreboard .score-indicator .name {
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+.scoreboard .score-indicator .score {
+  font-size: 1.5rem;
 }
