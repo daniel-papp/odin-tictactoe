@@ -151,6 +151,15 @@ const gameFlowController = (function() {
         gameboardController.toggleGameOverScreen();
     }
 
+    const startNextRound = function() {
+        gameboardController.clearBoard();
+        playerOne.clearCapturedFields();
+        playerTwo.clearCapturedFields();
+        currentTurn = 1;
+        gameOver = false;
+        gameboardController.toggleGameOverScreen();
+    }
+
     const winningStates = [
         [0, 1, 2],
         [3, 4, 5],
@@ -165,11 +174,13 @@ const gameFlowController = (function() {
     //cache DOM fields
     const fields = document.querySelectorAll('.field');
     const newGameButton = document.querySelector('.new-game-btn');
+    const nextRoundButton = document.querySelector('.next-round-btn')
 
 
     // binding events
     fields.forEach(field => field.addEventListener('click', takeTurn));
     newGameButton.addEventListener('click', startNewGame);
+    nextRoundButton.addEventListener('click', startNextRound);
 
 
     return {
