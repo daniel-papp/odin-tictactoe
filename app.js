@@ -27,9 +27,6 @@ const gameboardController = (function() {
     const gameOverBanner = document.querySelector('.game-over-banner');
     const overlay = document.querySelector('.overlay');
 
-    // binding events
-    // newGameButton.addEventListener('click', gameFlowController.startNewGame);
-
 
     const toggleGameOverScreen = function() {
         gameOverBanner.classList.toggle('active');
@@ -57,8 +54,6 @@ const gameboardController = (function() {
 
 
 const createPlayer = function(name, marker) {
-    // this.name = name;
-    // this.marker = marker;
     let score = 0;
     const capturedFields =[];
   
@@ -83,6 +78,10 @@ const createPlayer = function(name, marker) {
     const getName = function() {
         return name;
     }
+
+    const getMarker = function() {
+        return marker;
+    }
     
     const displayScore = function() {
         return score;
@@ -93,9 +92,9 @@ const createPlayer = function(name, marker) {
     }
 
     return {
-        name: name,
         updateScore: updateScore,
         getName: getName,
+        getMarker: getMarker,
     	displayScore: displayScore,
         placeMarker: placeMarker,
         capturedFields: capturedFields,
@@ -134,6 +133,8 @@ const gameFlowController = (function() {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
                 winner.updateScore();
+                winnerName.textContent = winner.getName();
+                winnerMarker.textContent = winner.getMarker();
                 gameOver = true;
                 gameboardController.toggleGameOverScreen();
             }
@@ -174,7 +175,9 @@ const gameFlowController = (function() {
     //cache DOM fields
     const fields = document.querySelectorAll('.field');
     const newGameButton = document.querySelector('.new-game-btn');
-    const nextRoundButton = document.querySelector('.next-round-btn')
+    const nextRoundButton = document.querySelector('.next-round-btn');
+    const winnerName = document.querySelector('#winner-name');
+    const winnerMarker = document.querySelector('#winner-marker');
 
 
     // binding events
