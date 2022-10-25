@@ -82,3 +82,48 @@ h1 {
 .scoreboard .score-indicator .score {
   font-size: 1.5rem;
 }
+
+.game-over-banner {
+  background-color: rgb(45, 64, 83);
+  height: 250px;
+  width: 100vw;
+  position: fixed;
+  top: calc(50% - 125px);
+  z-index: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+.game-over-banner .winner-big-text {
+  font-size: 3.5rem;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.game-over-banner .winner-big-text #winner-marker {
+  font-size: 6rem;
+}
+.game-over-banner .btn {
+  font-size: 1rem;
+  padding: 5px 10px;
+  margin: 0 5px;
+  text-transform: uppercase;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: scale(0);
+}
+.overlay.active {
+  transform: scale(1);
+}
