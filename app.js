@@ -27,6 +27,9 @@ const gameboardController = (function() {
     const gameOverBanner = document.querySelector('.game-over-banner');
     const overlay = document.querySelector('.overlay');
 
+    // binding events
+    // newGameButton.addEventListener('click', gameFlowController.startNewGame);
+
 
     const toggleGameOverScreen = function() {
         gameOverBanner.classList.toggle('active');
@@ -72,6 +75,11 @@ const createPlayer = function(name, marker) {
         gameboardController.render();
     };
 
+    const resetScore = function() {
+        score = 0;
+        gameboardController.render();
+    }
+
     const getName = function() {
         return name;
     }
@@ -91,14 +99,15 @@ const createPlayer = function(name, marker) {
     	displayScore: displayScore,
         placeMarker: placeMarker,
         capturedFields: capturedFields,
-        clearCapturedFields: clearCapturedFields
+        clearCapturedFields: clearCapturedFields,
+        resetScore: resetScore
     }
 
 };
 
 
 const playerOne = createPlayer('Player', 'X');
-const playerTwo = createPlayer('CPU', 'O');
+const playerTwo = createPlayer('Computer', 'O');
 
 
 const gameFlowController = (function() {
@@ -135,6 +144,8 @@ const gameFlowController = (function() {
         gameboardController.clearBoard();
         playerOne.clearCapturedFields();
         playerTwo.clearCapturedFields();
+        playerOne.resetScore();
+        playerTwo.resetScore();
         currentTurn = 1;
         gameOver = false;
         gameboardController.toggleGameOverScreen();
@@ -153,9 +164,13 @@ const gameFlowController = (function() {
 
     //cache DOM fields
     const fields = document.querySelectorAll('.field');
+    const newGameButton = document.querySelector('.new-game-btn');
+
 
     // binding events
     fields.forEach(field => field.addEventListener('click', takeTurn));
+    newGameButton.addEventListener('click', startNewGame);
+
 
     return {
         startNewGame: startNewGame
@@ -163,4 +178,5 @@ const gameFlowController = (function() {
 
 })();
 
-gameFlowController.startNewGame();
+// gameFlowController.startNewGame();
+gameboardController.clearBoard();
