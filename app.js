@@ -24,7 +24,14 @@ const gameboardController = (function() {
     const oName = document.querySelector('#o-name');
     const xScore = document.querySelector('#x-score');
     const oScore = document.querySelector('#o-score');
+    const gameOverBanner = document.querySelector('.game-over-banner');
+    const overlay = document.querySelector('.overlay');
 
+
+    const toggleGameOverScreen = function() {
+        gameOverBanner.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
 
     const _render = function() {
         fields.forEach((field, marker) => field.textContent = gameboard[marker]);
@@ -39,7 +46,8 @@ const gameboardController = (function() {
         updateBoard: updateBoard,
         invalidFields: invalidFields,
         clearBoard: clearBoard,
-        render: _render
+        render: _render,
+        toggleGameOverScreen: toggleGameOverScreen
     };
     
 })();
@@ -117,10 +125,8 @@ const gameFlowController = (function() {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
                 winner.updateScore();
-                // console.log(`${winner.name} is the winner!`);
-                // console.log('The score is:')
-                // console.log(`X: ${playerOne.displayScore()} - O: ${playerTwo.displayScore()}`)
                 gameOver = true;
+                gameboardController.toggleGameOverScreen();
             }
         }
     };
@@ -131,6 +137,7 @@ const gameFlowController = (function() {
         playerTwo.clearCapturedFields();
         currentTurn = 1;
         gameOver = false;
+        gameboardController.toggleGameOverScreen();
     }
 
     const winningStates = [

@@ -98,6 +98,10 @@ h1 {
   color: white;
   font-size: 1rem;
   text-transform: uppercase;
+  transform: scale(0);
+}
+.game-over-banner.active {
+  transform: scale(1);
 }
 .game-over-banner .winner-big-text {
   font-size: 3.5rem;
