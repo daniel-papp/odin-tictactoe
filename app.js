@@ -112,6 +112,7 @@ const playerTwo = createPlayer('Computer', 'O');
 const gameFlowController = (function() {
     let currentTurn = 1;
     let gameOver = false;
+    let tieScore = 0;
 
     const takeTurn = function(e) {
         if (gameOver) return;
@@ -126,11 +127,14 @@ const gameFlowController = (function() {
             gameboardController.invalidFields.push(currentField);
             checkForWinner(winningStates, currentPlayer.capturedFields, currentPlayer);
             if (!gameOver) {
+                checkForTie();
+            };
+            if (!gameOver) {
                 currentTurn++;
                 setTurnIndicator();
-            }
+            };
         }
-    }
+    };
 
     const checkForWinner = function(winning, captured, winner) {
         for (let i = 0; i < winning.length; i++) {
@@ -144,6 +148,16 @@ const gameFlowController = (function() {
         }
     };
 
+    const checkForTie = function() {
+        if (gameboardController.invalidFields.length === 9) {
+            tieScore++;
+            winnerName.textContent = 'TIE';
+            winnerMarker.textContent = 'TIE';
+            gameOver = true;
+            gameboardController.toggleGameOverScreen();
+        }
+    }
+
     const startNewGame = function() {
         gameboardController.clearBoard();
         playerOne.clearCapturedFields();
@@ -154,7 +168,7 @@ const gameFlowController = (function() {
         setTurnIndicator();
         gameOver = false;
         gameboardController.toggleGameOverScreen();
-    }
+    };
 
     const startNextRound = function() {
         gameboardController.clearBoard();
@@ -164,7 +178,7 @@ const gameFlowController = (function() {
         setTurnIndicator();
         gameOver = false;
         gameboardController.toggleGameOverScreen();
-    }
+    };
 
     const setTurnIndicator = function() {
         if (currentTurn % 2) {
@@ -172,7 +186,7 @@ const gameFlowController = (function() {
         } else {
             currentMarker.textContent = 'O';
         }
-    }
+    };
 
     const winningStates = [
         [0, 1, 2],
