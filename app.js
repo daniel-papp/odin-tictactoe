@@ -125,7 +125,10 @@ const gameFlowController = (function() {
             currentPlayer.placeMarker(e, currentField);
             gameboardController.invalidFields.push(currentField);
             checkForWinner(winningStates, currentPlayer.capturedFields, currentPlayer);
-            currentTurn++;
+            if (!gameOver) {
+                currentTurn++;
+                setTurnIndicator();
+            }
         }
     }
 
@@ -148,6 +151,7 @@ const gameFlowController = (function() {
         playerOne.resetScore();
         playerTwo.resetScore();
         currentTurn = 1;
+        setTurnIndicator();
         gameOver = false;
         gameboardController.toggleGameOverScreen();
     }
@@ -157,8 +161,17 @@ const gameFlowController = (function() {
         playerOne.clearCapturedFields();
         playerTwo.clearCapturedFields();
         currentTurn = 1;
+        setTurnIndicator();
         gameOver = false;
         gameboardController.toggleGameOverScreen();
+    }
+
+    const setTurnIndicator = function() {
+        if (currentTurn % 2) {
+            currentMarker.textContent = 'X';
+        } else {
+            currentMarker.textContent = 'O';
+        }
     }
 
     const winningStates = [
@@ -178,6 +191,7 @@ const gameFlowController = (function() {
     const nextRoundButton = document.querySelector('.next-round-btn');
     const winnerName = document.querySelector('#winner-name');
     const winnerMarker = document.querySelector('#winner-marker');
+    const currentMarker = document.querySelector('#current-marker');
 
 
     // binding events
