@@ -24,6 +24,7 @@ const gameboardController = (function() {
     const oName = document.querySelector('#o-name');
     const xScore = document.querySelector('#x-score');
     const oScore = document.querySelector('#o-score');
+    const tieScore = document.querySelector('#tie-score');
     const gameOverBanner = document.querySelector('.game-over-banner');
     const overlay = document.querySelector('.overlay');
 
@@ -39,6 +40,7 @@ const gameboardController = (function() {
         oName.textContent = `${playerTwo.getName()}`;
         xScore.textContent = `${playerOne.displayScore()}`;
         oScore.textContent = `${playerTwo.displayScore()}`;
+        tieScore.textContent = gameFlowController.getTieScore();
     };
 
     return {
@@ -151,22 +153,28 @@ const gameFlowController = (function() {
     const checkForTie = function() {
         if (gameboardController.invalidFields.length === 9) {
             tieScore++;
+            gameboardController.render();
             winnerName.textContent = 'TIE';
             winnerMarker.textContent = 'TIE';
             gameOver = true;
             gameboardController.toggleGameOverScreen();
         }
+    };
+
+    const getTieScore = function() {
+        return tieScore;
     }
 
     const startNewGame = function() {
-        gameboardController.clearBoard();
         playerOne.clearCapturedFields();
         playerTwo.clearCapturedFields();
         playerOne.resetScore();
         playerTwo.resetScore();
+        tieScore = 0;
         currentTurn = 1;
         setTurnIndicator();
         gameOver = false;
+        gameboardController.clearBoard();
         gameboardController.toggleGameOverScreen();
     };
 
@@ -215,7 +223,8 @@ const gameFlowController = (function() {
 
 
     return {
-        startNewGame: startNewGame
+        startNewGame: startNewGame,
+        getTieScore: getTieScore
     }
 
 })();
