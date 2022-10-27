@@ -142,8 +142,8 @@ const gameFlowController = (function() {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
                 winner.updateScore();
-                winnerName.textContent = winner.getName();
-                winnerMarker.textContent = winner.getMarker();
+                resultMessageSmall.textContent = `${winner.getName()} won!`;
+                resultMessageBig.textContent = `${winner.getMarker()} takes the round`;
                 gameOver = true;
                 gameboardController.toggleGameOverScreen();
             }
@@ -154,8 +154,8 @@ const gameFlowController = (function() {
         if (gameboardController.invalidFields.length === 9) {
             tieScore++;
             gameboardController.render();
-            winnerName.textContent = 'TIE';
-            winnerMarker.textContent = 'TIE';
+            resultMessageSmall.textContent = 'No winner!';
+            resultMessageBig.textContent = 'It\'s a tie';
             gameOver = true;
             gameboardController.toggleGameOverScreen();
         }
@@ -211,8 +211,8 @@ const gameFlowController = (function() {
     const fields = document.querySelectorAll('.field');
     const newGameButton = document.querySelector('.new-game-btn');
     const nextRoundButton = document.querySelector('.next-round-btn');
-    const winnerName = document.querySelector('#winner-name');
-    const winnerMarker = document.querySelector('#winner-marker');
+    const resultMessageSmall = document.querySelector('.winner-small-text');
+    const resultMessageBig = document.querySelector('.winner-big-text');
     const currentMarker = document.querySelector('#current-marker');
 
 
