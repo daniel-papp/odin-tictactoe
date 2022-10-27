@@ -22,7 +22,7 @@ h1 {
 
 .menu {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 20px;
 }
 .menu .turn-indicator {
@@ -34,11 +34,6 @@ h1 {
   align-items: center;
   width: 100px;
   height: 35px;
-}
-.menu .settings-btn {
-  width: 35px;
-  height: 35px;
-  padding: 3px;
 }
 
 .board-container {
