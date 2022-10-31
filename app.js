@@ -20,14 +20,27 @@ const gameboardController = (function() {
 
     //cache DOM fields
     const fields = document.querySelectorAll('.field');
-    const playerOneDisplay = document.querySelector('.player-one-score');
-    const playerTwoDisplay = document.querySelector('.player-two-score');
+    const xName = document.querySelector('#x-name');
+    const oName = document.querySelector('#o-name');
+    const xScore = document.querySelector('#x-score');
+    const oScore = document.querySelector('#o-score');
+    const tieScore = document.querySelector('#tie-score');
+    const gameOverBanner = document.querySelector('.game-over-banner');
+    const overlay = document.querySelector('.overlay');
 
+
+    const toggleGameOverScreen = function() {
+        gameOverBanner.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
 
     const _render = function() {
         fields.forEach((field, marker) => field.textContent = gameboard[marker]);
-        playerOneDisplay.textContent = `${playerOne.getName()}: ${playerOne.displayScore()}`
-        playerTwoDisplay.textContent = `${playerTwo.getName()}: ${playerTwo.displayScore()}`
+        xName.textContent = `${playerOne.getName()}`;
+        oName.textContent = `${playerTwo.getName()}`;
+        xScore.textContent = `${playerOne.displayScore()}`;
+        oScore.textContent = `${playerTwo.displayScore()}`;
+        tieScore.textContent = gameFlowController.getTieScore();
     };
 
     return {
@@ -35,15 +48,14 @@ const gameboardController = (function() {
         updateBoard: updateBoard,
         invalidFields: invalidFields,
         clearBoard: clearBoard,
-        render: _render
+        render: _render,
+        toggleGameOverScreen: toggleGameOverScreen
     };
     
 })();
 
 
 const createPlayer = function(name, marker) {
-    // this.name = name;
-    // this.marker = marker;
     let score = 0;
     const capturedFields =[];
   
@@ -60,8 +72,17 @@ const createPlayer = function(name, marker) {
         gameboardController.render();
     };
 
+    const resetScore = function() {
+        score = 0;
+        gameboardController.render();
+    }
+
     const getName = function() {
         return name;
+    }
+
+    const getMarker = function() {
+        return marker;
     }
     
     const displayScore = function() {
@@ -73,25 +94,27 @@ const createPlayer = function(name, marker) {
     }
 
     return {
-        name: name,
         updateScore: updateScore,
         getName: getName,
+        getMarker: getMarker,
     	displayScore: displayScore,
         placeMarker: placeMarker,
         capturedFields: capturedFields,
-        clearCapturedFields: clearCapturedFields
+        clearCapturedFields: clearCapturedFields,
+        resetScore: resetScore
     }
 
 };
 
 
-const playerOne = createPlayer('Player One', 'X');
-const playerTwo = createPlayer('Player Two', 'O');
+const playerOne = createPlayer('Player', 'X');
+const playerTwo = createPlayer('Computer', 'O');
 
 
 const gameFlowController = (function() {
     let currentTurn = 1;
     let gameOver = false;
+    let tieScore = 0;
 
     const takeTurn = function(e) {
         if (gameOver) return;
@@ -105,29 +128,73 @@ const gameFlowController = (function() {
             currentPlayer.placeMarker(e, currentField);
             gameboardController.invalidFields.push(currentField);
             checkForWinner(winningStates, currentPlayer.capturedFields, currentPlayer);
-            currentTurn++;
+            if (!gameOver) {
+                checkForTie();
+            };
+            if (!gameOver) {
+                currentTurn++;
+                setTurnIndicator();
+            };
         }
-    }
+    };
 
     const checkForWinner = function(winning, captured, winner) {
         for (let i = 0; i < winning.length; i++) {
             if (winning[i].every(elem => captured.includes(elem))) {
                 winner.updateScore();
-                // console.log(`${winner.name} is the winner!`);
-                // console.log('The score is:')
-                // console.log(`X: ${playerOne.displayScore()} - O: ${playerTwo.displayScore()}`)
+                resultMessageSmall.textContent = `${winner.getName()} won!`;
+                resultMessageBig.textContent = `${winner.getMarker()} takes the round`;
                 gameOver = true;
+                gameboardController.toggleGameOverScreen();
             }
         }
     };
 
+    const checkForTie = function() {
+        if (gameboardController.invalidFields.length === 9) {
+            tieScore++;
+            gameboardController.render();
+            resultMessageSmall.textContent = 'No winner!';
+            resultMessageBig.textContent = 'It\'s a tie';
+            gameOver = true;
+            gameboardController.toggleGameOverScreen();
+        }
+    };
+
+    const getTieScore = function() {
+        return tieScore;
+    }
+
     const startNewGame = function() {
+        playerOne.clearCapturedFields();
+        playerTwo.clearCapturedFields();
+        playerOne.resetScore();
+        playerTwo.resetScore();
+        tieScore = 0;
+        currentTurn = 1;
+        setTurnIndicator();
+        gameOver = false;
+        gameboardController.clearBoard();
+        gameboardController.toggleGameOverScreen();
+    };
+
+    const startNextRound = function() {
         gameboardController.clearBoard();
         playerOne.clearCapturedFields();
         playerTwo.clearCapturedFields();
         currentTurn = 1;
+        setTurnIndicator();
         gameOver = false;
-    }
+        gameboardController.toggleGameOverScreen();
+    };
+
+    const setTurnIndicator = function() {
+        if (currentTurn % 2) {
+            currentMarker.textContent = 'X';
+        } else {
+            currentMarker.textContent = 'O';
+        }
+    };
 
     const winningStates = [
         [0, 1, 2],
@@ -142,16 +209,25 @@ const gameFlowController = (function() {
 
     //cache DOM
     const fields = document.querySelectorAll('.field');
-    const newGameButton = document.querySelector('#new-game-btn');
+    const newGameButton = document.querySelector('.new-game-btn');
+    const nextRoundButton = document.querySelector('.next-round-btn');
+    const resultMessageSmall = document.querySelector('.winner-small-text');
+    const resultMessageBig = document.querySelector('.winner-big-text');
+    const currentMarker = document.querySelector('#current-marker');
+
 
     // binding events
     fields.forEach(field => field.addEventListener('click', takeTurn));
     newGameButton.addEventListener('click', startNewGame);
+    nextRoundButton.addEventListener('click', startNextRound);
+
 
     return {
-        startNewGame: startNewGame
+        startNewGame: startNewGame,
+        getTieScore: getTieScore
     }
 
 })();
 
-gameFlowController.startNewGame();
+// gameFlowController.startNewGame();
+gameboardController.clearBoard();
